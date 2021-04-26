@@ -1,15 +1,16 @@
 package com.example.demo3;
 
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.StringWriter;
 
 public class Events {
 
-    private JSONObject event = new JSONObject();
+    private JSONObject event;
     private String eventDate, eventType, eventDesciprtion;
-    public Events(String eventDate, String eventType, String eventDescription) throws IOException {
+    public Events(String eventDate, String eventType, String eventDescription) {
+        this.event = new JSONObject();
         this.eventDate = eventDate;
         this.eventType = eventType;
         this.eventDesciprtion = eventDescription;
@@ -20,13 +21,13 @@ public class Events {
 
         return event;
     }
-    private void createEvent() throws IOException {
+    private void createEvent()  {
 
         event.put("eventDate",eventDate);
         event.put("eventType",eventType);
         event.put("eventDescription",eventDesciprtion);
         StringWriter out = new StringWriter();
-        event.writeJSONString(out);
+
 
         String jsonText = out.toString();
         System.out.print(jsonText);

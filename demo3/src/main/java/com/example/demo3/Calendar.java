@@ -1,6 +1,6 @@
 package com.example.demo3;
 
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

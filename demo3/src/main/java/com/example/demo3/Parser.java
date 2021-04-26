@@ -3,7 +3,7 @@ package com.example.demo3;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -54,26 +54,26 @@ public class Parser {
                     calendar.addEvent(event);
                 }
                 eventDate = "MM/DD";
-                eventTypes ="General";
+                eventTypes ="General, ";
                 eventDescription= "";
                 tempSB = new StringBuilder();
                 sb.append(s);
-                m = p.matcher(tempSB);
+                m = p.matcher(sb);
                 while (m.find()){//prints out the matches
                    eventDate = m.group();
                 }
-                eventDate =m.group();
-                eventDescription.concat(s.substring(16) +", ");
+
+                eventDescription = eventDescription.concat(s.substring(16) +", ");
                 inEvent = true;
             }
             if(inEvent){
                 if(s.contains("Due")){
-                    eventTypes.concat("Due, ");
+                   eventTypes = eventTypes.concat("Due, ");
                 }
                 if(s.contains("Assigned")){
-                    eventTypes.concat("Assigned, ");
+                    eventTypes = eventTypes.concat("Assigned, ");
                 }
-                eventDescription.concat(s+", ");
+                eventDescription =  eventDescription.concat(s+", ");
             }
 
 
