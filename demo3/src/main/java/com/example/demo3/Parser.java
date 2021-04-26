@@ -1,26 +1,29 @@
 package com.example.demo3;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.json.JSONObject;
 
 public class Parser {
 
     private PDDocument doc;
-
+    private int maxFileSize = 250 * 1024;
+    private int maxMemSize = 20 * 1024;
     public Parser(String filePath)throws IOException{
         File file = new File(filePath);
 
     }
 
-    public void parseFile(File file, HttpServletResponse response)throws IOException{
+    public void parseFile(File file, HttpServletResponse response) throws Exception {
         doc = PDDocument.load(file);
         //converts the PDF into text
         java.io.PrintWriter out = response.getWriter( );
@@ -44,12 +47,12 @@ public class Parser {
         //This pattern finds the pattern (DD/MM) in the syllabus
         String[] lines = sb.toString().split("\\n");
         for(String s: lines){
-            System.out.println("Content = " + s);
+
 
             if(s.contains("Class")){
                 if(inEvent){
 
-                    Events event  = new Events(eventDate, eventTypes, eventDescription);
+                    Event event  = new Event(eventDate, eventTypes, eventDescription);
                     //Add to calendar below
                     calendar.addEvent(event);
                 }
@@ -81,13 +84,26 @@ public class Parser {
         }
         calendar.printCalendar(response);
 
-        Pattern p1 = Pattern.compile("(\\d\\d/\\d\\d)");
-        Matcher m2 = p.matcher(sb);
-        while (m.find()){//prints out the matches
-            out.println(m.group());
-            System.out.println(m.group());
-            out.println("</br>");
+        boolean found = false;
+
+        FileReader fileReader = new FileReader(file);
+
+        if (!found){
+            PrintWriter fileWriter = new PrintWriter(new
+                    FileOutputStream("c:\\Program Files\\apache-tomcat-9.0.45\\webapps\\data/filedata1.json",true));
+            fileWriter.println("[");
+            for(JSONObject obj : calendar.getCalendar()){
+                String jsonText = obj.toString();
+                fileWriter.println( jsonText +",");
+                fileWriter.println( "\n" );
+
+            }
+            fileWriter.println("]");
+
+            fileWriter.close();
+            System.out.println("file saved");
         }
+
         if (doc != null) {
             doc.close();
         }

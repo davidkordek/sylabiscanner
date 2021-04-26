@@ -5,11 +5,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.StringWriter;
 
-public class Events {
+public class Event {
 
     private JSONObject event;
     private String eventDate, eventType, eventDesciprtion;
-    public Events(String eventDate, String eventType, String eventDescription) {
+    public Event(String eventDate, String eventType, String eventDescription) {
         this.event = new JSONObject();
         this.eventDate = eventDate;
         this.eventType = eventType;

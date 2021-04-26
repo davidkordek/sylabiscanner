@@ -10,6 +10,7 @@
 <br/>
 <a href="EventServlet">Event Servlet</a><br/>
 <a href="CoursesServlet">Courses Servlet</a><br/>
+<a href="CalendarServlet">Calendar Servlet</a><br/>
 </br>
 </br>
 <h3>File Upload:</h3>

@@ -7,7 +7,7 @@ import javax.servlet.annotation.*;
 @WebServlet(name = "EventServlet", value = "/EventServlet")
 public class EventServlet extends HttpServlet {
     private String message;
-    private Events events;
+    private Event event;
     public void init() {
         message = "This is the Event Servlet!";
     }
