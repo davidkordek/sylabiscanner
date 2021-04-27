@@ -30,12 +30,19 @@ public class EventServlet extends HttpServlet {
         getServletContext().getRequestDispatcher("/eventDisplay.jsp").forward(request,response);
 
 
+        String date = request.getParameter("eventDate") != null ?  request.getParameter("eventDate")  :  "MM/DD N/A" ;
+        String type =request.getParameter("eventType") != null ? request.getParameter("eventType") :"Type N/A" ;
+        String description =request.getParameter("eventDescription") != null ? request.getParameter("eventDescription") : "Description N/A";
 
-        String date =request.getParameter("eventDate");
-        String type =request.getParameter("eventType");
-        String description =request.getParameter("eventDescription");
+        String eventRemove = request.getParameter("eventDateRemove");
         Parser parser = new Parser();
-        parser.insertNewEvent(date, type, description);
+        if(eventRemove != null){
+            parser.removeEvent(eventRemove);
+        }else{
+            parser.insertNewEvent(date, type, description);
+        }
+
+
 
 
     }

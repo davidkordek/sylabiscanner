@@ -6,7 +6,7 @@
 </head>
 <body>
 <form action="EventServlet" method="post">
-
+    Add Event <br/>
     Date:<input type="text" name="eventDate"/><br/><br/>
     Event Type:<input type="text" name="eventType"/><br/><br/>
     Description:<input type="text" name="eventDescription"/><br/><br/>
@@ -16,5 +16,16 @@
     <input type="submit" value="create event"/>
 
 </form>
+
+
+<form action="EventServlet" method="post">
+    Remove Event <br/>
+    Date:<input type="text" name="eventDateRemove"/><br/><br/>
+
+    <br/><br/>
+    <input type="submit" value="remove event"/>
+
+</form>
+
 </body>
 </html>

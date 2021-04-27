@@ -10,7 +10,6 @@ import javax.servlet.annotation.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet(name = "SearchServlet", value = "/SearchServlet")
 public class SearchServlet extends HttpServlet {
@@ -46,7 +45,7 @@ public class SearchServlet extends HttpServlet {
             //Iterate over employee array
             eventList.forEach( event -> {
 
-                boolean isMatch = parser1.isEventObject( ((JSONObject) event ),  date );
+                boolean isMatch = parser1.isEventMatch( ((JSONObject) event ),  date );
                 if(isMatch){
                     try {
                         parser1.printSingleEventObject((JSONObject) event, response);
