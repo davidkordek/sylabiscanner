@@ -29,6 +29,16 @@ public class Parser {
     public Parser() {
 
     }
+    public void showEntireCalendar(HttpServletResponse response) throws IOException {
+        Calendar calendar = readJSON(false);
+        for(JSONObject obj: calendar.getCalendar()){
+           String date = (String) obj.get("eventDate");
+           date = date.substring(2);
+
+            parseEventObject(obj,  response );
+        }
+    }
+
 
     public void parseFile(File file, HttpServletResponse response) throws Exception {
         doc = PDDocument.load(file);
@@ -124,7 +134,7 @@ public class Parser {
         Event event = new Event(eventDate, eventType, eventDescription);
 
 
-        Calendar cal = readJSON();
+        Calendar cal = readJSON(true);
 
 
         cal.addEvent(event);
@@ -179,7 +189,7 @@ public class Parser {
 
         return false;
     }
-    public Calendar readJSON() {
+    public Calendar readJSON(boolean delete) {
         try (FileReader reader = new FileReader("c:\\Program Files\\apache-tomcat-9.0.45\\webapps\\data/filedata1.json"))
         {
             //Read JSON file
@@ -203,12 +213,15 @@ public class Parser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        File myObj = new File("c:\\Program Files\\apache-tomcat-9.0.45\\webapps\\data/filedata1.json");
-        if (myObj.delete()) {
-            System.out.println("Deleted the file: " + myObj.getName());
-        } else {
-            System.out.println("Failed to delete the file..");
+        if(delete){
+            File myObj = new File("c:\\Program Files\\apache-tomcat-9.0.45\\webapps\\data/filedata1.json");
+            if (myObj.delete()) {
+                System.out.println("Deleted the file: " + myObj.getName());
+            } else {
+                System.out.println("Failed to delete the file..");
+            }
         }
+
         return calendar2;
     }
     public void removeEvent(String eventDate) throws FileNotFoundException {
@@ -216,7 +229,7 @@ public class Parser {
 
 
 
-        Calendar cal = readJSON();
+        Calendar cal = readJSON(true);
 
 
 

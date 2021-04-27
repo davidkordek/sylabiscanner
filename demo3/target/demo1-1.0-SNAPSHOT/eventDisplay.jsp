@@ -5,6 +5,6 @@
     <title>Add/Remove Event</title>
 </head>
 <body>
-Success!
+Check calendar servlet if the event was found it has been removed, if added a new one, it has been added!
 </body>
 </html>
