@@ -207,7 +207,7 @@ public class Parser {
         if (myObj.delete()) {
             System.out.println("Deleted the file: " + myObj.getName());
         } else {
-            System.out.println("Failed to delete the file.");
+            System.out.println("Failed to delete the file..");
         }
         return calendar2;
     }
