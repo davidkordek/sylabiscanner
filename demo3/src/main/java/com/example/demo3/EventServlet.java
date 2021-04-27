@@ -1,6 +1,9 @@
 package com.example.demo3;
 
 import java.io.*;
+import java.util.Collections;
+import java.util.List;
+import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
@@ -12,14 +15,29 @@ public class EventServlet extends HttpServlet {
         message = "This is the Event Servlet!";
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
 
+        getServletContext().getRequestDispatcher("/event.jsp").forward(request,response);
         // Hello
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
-        out.println("</body></html>");
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+
+        getServletContext().getRequestDispatcher("/eventDisplay.jsp").forward(request,response);
+
+
+
+        String date =request.getParameter("eventDate");
+        String type =request.getParameter("eventType");
+        String description =request.getParameter("eventDescription");
+        Parser parser = new Parser();
+        parser.insertNewEvent(date, type, description);
+
+
     }
 
     public void destroy() {

@@ -22,15 +22,12 @@ public class Calendar {
 
 
         StringWriter sw = new StringWriter();
-        for(JSONObject obj: calendar){
+        for(JSONObject obj: calendar) {
             String jsonText = obj.toString();
             out.println(jsonText);
             out.println("</br>");
             out.println("</br>");
 
         }
-
-
-
     }
 }

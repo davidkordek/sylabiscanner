@@ -8,17 +8,45 @@ import org.json.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.text.ParseException;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 @WebServlet(name = "CalendarServlet", value = "/CalendarServlet")
 public class CalendarServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
+
+
+        Parser parser = new Parser();
+        try (FileReader reader = new FileReader("c:\\Program Files\\apache-tomcat-9.0.45\\webapps\\data/filedata1.json"))
+        {
+            //Read JSON file
+            Object json = new JSONTokener(reader).nextValue();
+            System.out.println(json.toString());
+
+
+
+            JSONArray eventList = (JSONArray) json;
+            System.out.println(eventList);
+
+            //Iterate over employee array
+            eventList.forEach( event -> {
+                try {
+                    parser.parseEventObject( ((JSONObject) event ),  response );
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 //        PrintWriter out = response.getWriter();
 //        try {
@@ -51,8 +79,8 @@ public class CalendarServlet extends HttpServlet {
 //        out.println("<table></html>");
     }
 
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 
     }
 }
