@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 
-public class Calendar  {
+public class Calendar {
     private ArrayList<JSONObject> calendar = new ArrayList<JSONObject>();
     public void addEvent(Event event){
         calendar.add(event.getEvent());

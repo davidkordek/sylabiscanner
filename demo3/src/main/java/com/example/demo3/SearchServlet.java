@@ -10,6 +10,7 @@ import javax.servlet.annotation.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 
 @WebServlet(name = "SearchServlet", value = "/SearchServlet")
 public class SearchServlet extends HttpServlet {
@@ -36,7 +37,12 @@ public class SearchServlet extends HttpServlet {
 
 
         Parser parser = new Parser();
-        Calendar cal = parser.readJSON(false);
+        Calendar cal = null;
+        try {
+            cal = parser.readJSON(false);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         String date = request.getParameter("eventDate");
 
         String description =request.getParameter("eventDescription");

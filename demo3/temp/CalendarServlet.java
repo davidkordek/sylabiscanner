@@ -42,11 +42,11 @@ public class CalendarServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // getServletContext().getRequestDispatcher("/calDisplay.jsp");//.forward(request,response);
+       // getServletContext().getRequestDispatcher("/calDisplay.jsp");//.forward(request,response);
         response.setContentType("text/html");
         Parser parser = new Parser();
 
-        //   ----- PRINTING THE HEADERS -----
+   //   ----- PRINTING THE HEADERS -----
         Calendar cal = Calendar.getInstance();
         Date date = new Date();
         cal.setTime(date);
@@ -65,7 +65,7 @@ public class CalendarServlet extends HttpServlet {
 
         out.println("<html><table style ='width:100%' border ='1px solid black'>");
 
-        //  ---- CURRENT DAY ----
+   //  ---- CURRENT DAY ----
 
         day1 = sdf1.format(date);
         System.out.println(day1);
@@ -73,7 +73,7 @@ public class CalendarServlet extends HttpServlet {
         cal.add(Calendar.DATE,+1);
         date = cal.getTime();
 
-        //   ---- NEXT DAY ----
+  //   ---- NEXT DAY ----
         day2 = sdf1.format(date);
         out.print("<th width=150>" + sdf1.format(date) + "<br>" + sdf.format(date) + "</th>");
         cal.add(Calendar.DATE,+1);
@@ -105,65 +105,37 @@ public class CalendarServlet extends HttpServlet {
 
         // Sunday Events
         out.print("</tr><tr height='600'><td width=150>");
-        try {
-            parser.showEntireCalendar(response, day1);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        parser.showEntireCalendar(response, day1);
         out.println("</td>");
 
         // Monday Events
         out.print("<td width=150>");
-        try {
-            parser.showEntireCalendar(response, day2);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        parser.showEntireCalendar(response, day2);
         out.println("</td>");
 
         // Tuesday Events
         out.print("<td width=150>");
-        try {
-            parser.showEntireCalendar(response, day3);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        parser.showEntireCalendar(response, day3);
         out.println("</td>");
 
         // Wednesday Events
         out.print("<td width=150>");
-        try {
-            parser.showEntireCalendar(response, day4);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        parser.showEntireCalendar(response, day4);
         out.println("</td>");
 
         // Thursday Events
         out.print("<td width=150>");
-        try {
-            parser.showEntireCalendar(response, day5);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        parser.showEntireCalendar(response, day5);
         out.println("</td>");
 
         // Friday Events
         out.print("<td width=150>");
-        try {
-            parser.showEntireCalendar(response, day6);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        parser.showEntireCalendar(response, day6);
         out.println("</td>");
 
         // Saturday Events
         out.print("<td width=150>");
-        try {
-            parser.showEntireCalendar(response, day7);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        parser.showEntireCalendar(response, day7);
         out.println("</td>");
         out.println("</tr><table></html>");
 

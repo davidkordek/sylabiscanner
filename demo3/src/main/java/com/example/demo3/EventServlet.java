@@ -1,6 +1,7 @@
 package com.example.demo3;
 
 import java.io.*;
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -29,17 +30,25 @@ public class EventServlet extends HttpServlet {
 
         getServletContext().getRequestDispatcher("/eventDisplay.jsp").forward(request,response);
 
-
-        String date = request.getParameter("eventDate") != null ?  request.getParameter("eventDate")  :  "MM/DD N/A" ;
+        Parser parser = new Parser();
+        String date = request.getParameter("eventDate") != null ?  request.getParameter("eventDate")  :  "00/00" ;
         String type =request.getParameter("eventType") != null ? request.getParameter("eventType") :"Type N/A" ;
         String description =request.getParameter("eventDescription") != null ? request.getParameter("eventDescription") : "Description N/A";
 
         String eventRemove = request.getParameter("eventDateRemove");
-        Parser parser = new Parser();
+
         if(eventRemove != null){
-            parser.removeEvent(eventRemove);
+            try {
+                parser.removeEvent(eventRemove);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }else{
-            parser.insertNewEvent(date, type, description, false);
+            try {
+                parser.insertNewEvent(date, type, description, false);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
 
