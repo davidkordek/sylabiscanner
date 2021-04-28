@@ -103,6 +103,8 @@ public class UploadServlet extends HttpServlet {
         } catch(Exception ex) {
             System.out.println(ex);
         }
+        getServletContext().getRequestDispatcher("/uploadSuccess.jsp").forward(request,response);
+
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)

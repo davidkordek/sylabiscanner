@@ -20,8 +20,13 @@ public class CalendarServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
+        java.io.PrintWriter out = response.getWriter();
 
-
+        out.print("<br><a href=\"/demo1_war_exploded/\"><button type=\"button\">GO HOME</button></a>");
+        out.println("</br>");
+        out.println("</br>");
+        out.println("CALENDAR: ");
+        out.println("</br>");
 
         Parser parser = new Parser();
         parser.showEntireCalendar(response);

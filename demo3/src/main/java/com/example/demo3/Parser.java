@@ -5,6 +5,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,7 +39,14 @@ public class Parser {
             parseEventObject(obj,  response );
         }
     }
+    public boolean findByDescription(JSONObject event, String matchingString){
+        if((event.get("eventDescription").toString().contains(matchingString))){
 
+            return true;
+        }
+
+        return false;
+    }
 
     public void parseFile(File file, HttpServletResponse response) throws Exception {
         doc = PDDocument.load(file);
@@ -130,18 +138,18 @@ public class Parser {
         }
 
     }
-    public void insertNewEvent(String eventDate, String eventType, String eventDescription) throws FileNotFoundException {
+    public void insertNewEvent(String eventDate, String eventType, String eventDescription, boolean isEdit) throws FileNotFoundException {
         Event event = new Event(eventDate, eventType, eventDescription);
 
-
-        Calendar cal = readJSON(true);
-
+        Calendar cal = readJSON(!isEdit);
 
         cal.addEvent(event);
 
             PrintWriter fileWriter = new PrintWriter(new
                     FileOutputStream("c:\\Program Files\\apache-tomcat-9.0.45\\webapps\\data/filedata1.json",true));
             fileWriter.println("[");
+
+
             for(JSONObject obj : cal.getCalendar()){
                 String jsonText = obj.toString();
                 fileWriter.println( jsonText +",");
@@ -153,6 +161,14 @@ public class Parser {
             fileWriter.close();
             System.out.println("file saved");
 
+    }
+    public void deleteOldJSON(){
+        File myObj = new File("c:\\Program Files\\apache-tomcat-9.0.45\\webapps\\data/filedata1.json");
+        if (myObj.delete()) {
+            System.out.println("Deleted the file: " + myObj.getName());
+        } else {
+            System.out.println("Failed to delete the file..");
+        }
     }
     public void parseEventObject(JSONObject event, HttpServletResponse response) throws IOException {
         java.io.PrintWriter out = response.getWriter();
@@ -179,7 +195,7 @@ public class Parser {
         out.println("</br>");
         out.println("</br>");
     }
-    public boolean isEventMatch(JSONObject event, String matchingString) {
+    public boolean findByDate(JSONObject event, String matchingString) {
 
         if(event.get("eventDate").equals(matchingString)){
 
@@ -195,7 +211,6 @@ public class Parser {
             //Read JSON file
             Object json = new JSONTokener(reader).nextValue();
             System.out.println(json.toString());
-            Parser parser = new Parser();
 
 
 
@@ -214,12 +229,7 @@ public class Parser {
             e.printStackTrace();
         }
         if(delete){
-            File myObj = new File("c:\\Program Files\\apache-tomcat-9.0.45\\webapps\\data/filedata1.json");
-            if (myObj.delete()) {
-                System.out.println("Deleted the file: " + myObj.getName());
-            } else {
-                System.out.println("Failed to delete the file..");
-            }
+            deleteOldJSON();
         }
 
         return calendar2;
@@ -243,10 +253,10 @@ public class Parser {
         JSONArray eventList = (JSONArray) json;
         System.out.println(eventList);
 
-        //Iterate over employee array
+        //Iterate over event array
         eventList.forEach( event -> {
 
-            boolean isMatch = isEventMatch( ((JSONObject) event ),  eventDate );
+            boolean isMatch = findByDate( ((JSONObject) event ),  eventDate );
             if(!isMatch){
 
                 String jsonText = event.toString();

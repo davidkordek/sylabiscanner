@@ -13,5 +13,6 @@ class EventTest {
         Event event = new Event("date", "type", "desc");
 
         assertNotNull(event.getEvent());
+
    }
 }

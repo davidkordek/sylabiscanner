@@ -13,4 +13,9 @@
 <body>
 This is the courses page.
 </body>
+<form action=/demo1_war_exploded/>
+
+    <input type="submit" value="GO HOME"/>
+</form>
+
 </html>

@@ -15,5 +15,20 @@
     <input type="submit" value="find event"/>
 
 </form>
+
+<form action="SearchServlet" method="post" >
+
+    Description:<input type="text" name="eventDescription"/><br/><br/>
+
+
+
+    <br/><br/>
+    <input type="submit" value="find event"/>
+
+</form>
+<form action=/demo1_war_exploded/>
+
+    <input type="submit" value="GO HOME"/>
+</form>
 </body>
 </html>

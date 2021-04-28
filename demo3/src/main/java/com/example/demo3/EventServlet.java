@@ -39,7 +39,7 @@ public class EventServlet extends HttpServlet {
         if(eventRemove != null){
             parser.removeEvent(eventRemove);
         }else{
-            parser.insertNewEvent(date, type, description);
+            parser.insertNewEvent(date, type, description, false);
         }
 
 
