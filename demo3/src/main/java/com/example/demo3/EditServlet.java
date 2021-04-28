@@ -6,6 +6,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.text.ParseException;
 
 @WebServlet(name = "EditServlet", value = "/EditServlet")
 public class EditServlet extends HttpServlet {
@@ -26,7 +27,11 @@ public class EditServlet extends HttpServlet {
         if(request.getParameter("eventDescription") !=null){
             Parser parser = new Parser();
 
-            parser.insertNewEvent(request.getParameter("eventDate"), request.getParameter("eventType"), request.getParameter("eventDescription"), false);
+            try {
+                parser.insertNewEvent(request.getParameter("eventDate"), request.getParameter("eventType"), request.getParameter("eventDescription"), false);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             getServletContext().getRequestDispatcher("/eventEditedSuccess.jsp").forward(request,response);
 
         }
@@ -39,7 +44,12 @@ public class EditServlet extends HttpServlet {
             JSONObject obj1 = null;
             boolean found = false;
 
-            Calendar cal = parser.readJSON(false);
+            Calendar cal = null;
+            try {
+                cal = parser.readJSON(false);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             for(JSONObject obj: cal.getCalendar()){
                 found = false;
                 found = parser.findByDate(obj, date);
@@ -56,7 +66,11 @@ public class EditServlet extends HttpServlet {
                 String type1 =obj1.get("eventType") != null ? (String) obj1.get("eventType") :"NOT FOUND" ;
                 String description1 =obj1.get("eventDescription") != null ? (String) obj1.get("eventDescription") : "NOT FOUND";
 
-                parser.removeEvent((String) obj1.get("eventDate"));
+                try {
+                    parser.removeEvent((String) obj1.get("eventDate"));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
                 java.io.PrintWriter out = response.getWriter();
                 request.setAttribute("eventDate", date1);
