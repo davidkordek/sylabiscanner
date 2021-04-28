@@ -27,5 +27,10 @@
 
 </form>
 
+<form action=/demo1_war_exploded/>
+
+    <input type="submit" value="GO HOME"/>
+</form>
+
 </body>
 </html>

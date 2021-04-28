@@ -8,10 +8,11 @@
 <h1><%= "Hello World!" %>
 </h1>
 <br/>
-<a href="EventServlet">Event Servlet</a><br/>
-<a href="CoursesServlet">Courses Servlet</a><br/>
-<a href="CalendarServlet">Calendar Servlet</a><br/>
-<a href="SearchServlet">Search Servlet</a><br/>
+<a href="EventServlet">Add/Remove Events</a><br/>
+<a href="CoursesServlet">Courses (Redacted)</a><br/>
+<a href="CalendarServlet">Calendar</a><br/>
+<a href="SearchServlet">Search</a><br/>
+<a href="EditServlet">Edit</a><br/>
 
 </br>
 </br>

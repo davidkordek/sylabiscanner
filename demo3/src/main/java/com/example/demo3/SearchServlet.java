@@ -25,42 +25,57 @@ public class SearchServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         response.setContentType("text/html");
-
-
-        String date =request.getParameter("eventDate");
-        System.out.println("out" + date);
-
-        Parser parser1 = new Parser();
-        try (FileReader reader = new FileReader("c:\\Program Files\\apache-tomcat-9.0.45\\webapps\\data/filedata1.json"))
-        {
-            //Read JSON file
-            Object json = new JSONTokener(reader).nextValue();
-            System.out.println(json.toString());
+        java.io.PrintWriter out = response.getWriter();
 
 
 
-            JSONArray eventList = (JSONArray) json;
-            System.out.println(eventList);
+        out.println("Results: ");
 
-            //Iterate over employee array
-            eventList.forEach( event -> {
+        out.println("</br>");
+        out.println("</br>");
 
-                boolean isMatch = parser1.isEventMatch( ((JSONObject) event ),  date );
-                if(isMatch){
-                    try {
-                        parser1.printSingleEventObject((JSONObject) event, response);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
 
+        Parser parser = new Parser();
+        Calendar cal = parser.readJSON(false);
+        String date = request.getParameter("eventDate");
+
+        String description =request.getParameter("eventDescription");
+
+        boolean found = false;
+        boolean hasFoundSomething = false;
+        if(description != null){
+            for(JSONObject obj: cal.getCalendar()){
+                found = false;
+                 found = parser.findByDescription(obj, description);
+                if(found){
+                    hasFoundSomething = true;
+                    parser.printSingleEventObject(obj, response);
                 }
-            });
+            }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }else{
+            for(JSONObject obj: cal.getCalendar()){
+                found = false;
+               found = parser.findByDate(obj, date);
+                if(found){
+                    hasFoundSomething = true;
+                    parser.printSingleEventObject(obj, response);
+                    break;
+                }
+            }
+
         }
+        if(!hasFoundSomething){
+            getServletContext().getRequestDispatcher("/notFound.jsp").forward(request,response);
+
+        }else{
+            out.print("<br><a href=\"/demo1_war_exploded/\"><button type=\"button\">GO HOME</button></a>");
+            out.println("</br>");
+            out.print("<br><a href=\"/demo1_war_exploded/SearchServlet\"><button type=\"button\">GO SEARCH</button></a>");
+            out.println("</br>");
+        }
+
+
 
     }
 }
