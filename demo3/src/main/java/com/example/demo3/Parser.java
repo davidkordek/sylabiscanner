@@ -35,13 +35,12 @@ public class Parser {
     public Parser() {
 
     }
+
     public void showEntireCalendar(HttpServletResponse response, String day) throws IOException, ParseException {
         Calendar calendar = readJSON(false);
-        int flag = 0;
 
         for(JSONObject obj: calendar.getCalendar()){
             String eDate = (String) obj.get("eventDate");
-            Date date = stringToDate((String) obj.get("eventDate"));
             if (eDate.contains(day))
             {
                 printSingleEventObject(obj,  response);
@@ -91,7 +90,8 @@ public class Parser {
                     eventDescription = eventDescription.replace("Class \\d\\d" , "");
                     eventDescription = eventDescription.replace("(\\d\\d/\\d\\d)" , "");
 
-
+                    eventDescription = eventDescription.replace("\n", "").replace("\r", "");
+                    eventTypes = eventTypes.replace("\n", "").replace("\r", "");
 
 
                     Event event  = new Event(eventDate, eventTypes, eventDescription);
@@ -132,25 +132,28 @@ public class Parser {
         FileReader fileReader = new FileReader(file);
 
         if (!found){
-            PrintWriter fileWriter = new PrintWriter(new
-                    FileOutputStream("c:\\Program Files\\apache-tomcat-9.0.45\\webapps\\data/filedata1.json",true));
-            fileWriter.println("[");
-            for(JSONObject obj : calendar.getCalendar()){
-                String jsonText = obj.toString();
-                fileWriter.println( jsonText +",");
-                fileWriter.println( "\n" );
-
-            }
-            fileWriter.print("]");
-
-            fileWriter.close();
-            System.out.println("file saved");
+            writeToFile(calendar);
         }
 
         if (doc != null) {
             doc.close();
         }
 
+    }
+    private void writeToFile(Calendar calendar) throws FileNotFoundException {
+        PrintWriter fileWriter = new PrintWriter(new
+                FileOutputStream("c:\\Program Files\\apache-tomcat-9.0.45\\webapps\\data/filedata1.json",true));
+        fileWriter.println("[");
+        for(JSONObject obj : calendar.getCalendar()){
+            String jsonText = obj.toString();
+            fileWriter.println( jsonText +",");
+            fileWriter.println( "\n" );
+
+        }
+        fileWriter.print("]");
+
+        fileWriter.close();
+        System.out.println("file saved");
     }
     public void insertNewEvent(String eventDate, String eventType, String eventDescription, boolean isEdit) throws FileNotFoundException, ParseException {
         Event event = new Event(eventDate, eventType, eventDescription);
@@ -159,21 +162,7 @@ public class Parser {
 
         cal.addEvent(event);
 
-            PrintWriter fileWriter = new PrintWriter(new
-                    FileOutputStream("c:\\Program Files\\apache-tomcat-9.0.45\\webapps\\data/filedata1.json",true));
-            fileWriter.println("[");
-
-
-            for(JSONObject obj : cal.getCalendar()){
-                String jsonText = obj.toString();
-                fileWriter.println( jsonText +",");
-                fileWriter.println( "\n" );
-
-            }
-            fileWriter.print("]");
-
-            fileWriter.close();
-            System.out.println("file saved");
+        writeToFile(cal);
 
     }
     public void deleteOldJSON(){
@@ -184,7 +173,6 @@ public class Parser {
             System.out.println("Failed to delete the file..");
         }
     }
-
     public void printSingleEventObject(JSONObject event, HttpServletResponse response) throws IOException{
         java.io.PrintWriter out = response.getWriter();
 
@@ -214,13 +202,10 @@ public class Parser {
             //Read JSON file
             Object json = new JSONTokener(reader).nextValue();
 
-
-
             JSONArray eventList = (JSONArray) json;
 
             //Iterate over  array
             for (Object event1 : eventList) {
-
 
                 Event temp = new Event( (String)((JSONObject)event1 ).get("eventDate"),    (String)((JSONObject)event1 ).get("eventType"), (String)((JSONObject)event1 ).get("eventDescription") );
                 calendarReturn.addEvent(temp);

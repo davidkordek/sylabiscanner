@@ -42,9 +42,11 @@ public class CalendarServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // getServletContext().getRequestDispatcher("/calDisplay.jsp");//.forward(request,response);
+
         response.setContentType("text/html");
         Parser parser = new Parser();
+        String newDate = null;
+        newDate = request.getParameter("date");
 
         //   ----- PRINTING THE HEADERS -----
         Calendar cal = Calendar.getInstance();
@@ -53,17 +55,53 @@ public class CalendarServlet extends HttpServlet {
         int day = cal.get(Calendar.DAY_OF_WEEK);    // Sunday-1 thru Saturday-7
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
         SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd");
+        SimpleDateFormat sDay = new SimpleDateFormat("dd");
+        SimpleDateFormat sMonth = new SimpleDateFormat("MM");
+        SimpleDateFormat sYear = new SimpleDateFormat("YYYY");
         PrintWriter out = response.getWriter();
-        cal.add(Calendar.MONTH,-1);
-        date = cal.getTime();
+
+        if(newDate == null)
+        {
+            //cal.add(Calendar.MONTH,-1);
+            date = cal.getTime();
+        }
+        else if (newDate != null)
+        {
+            int m = Integer.parseInt(newDate.substring(0,2));
+            int d = Integer.parseInt(newDate.substring(3));
+            int currentM = Integer.parseInt(sMonth.format(date));
+            int currentD = Integer.parseInt(sDay.format(date));
+
+            m = currentM - m;   // if currentM > m then m is positive
+            // if m > currentM then m is negative
+
+            d = currentD - d;   // if currentD > d then d is positive
+            // if d > currentD then d is negative
+
+            cal.add(Calendar.MONTH, -m);
+            cal.add(Calendar.DATE, -d);
+        }
+
 
 //        Date weekStart = new Date();
 //        Date weekEnd = new Date();
 //        cal.setTime(weekStart);
 //        cal.add(Calendar.DATE,+7);
 //        weekEnd = cal.getTime();
+        out.println("<html>");
+        out.println("<head>");
+        out.print("<br><a href=\"/demo1_war_exploded/\"><button type=\"button\">GO HOME</button></a>");
+        out.print("<br><a href=\"/demo1_war_exploded/MonthlyServlet\"><button type=\"button\">GO TO MONTHLY CALENDAR</button></a>");
+        out.println("<title>Weekly Calender</title>");
+        out.println("</head>");
+        out.println("<body><h2>Weekly Calendar<h2><h1> Week of " + sdf1.format(date) + " - ");
+        cal.add(Calendar.DATE, +6);
+        date = cal.getTime();
+        out.println(sdf1.format(date) + "</h1>");
+        out.println("<table style ='width:100%' border ='1px solid black'>");
 
-        out.println("<html><table style ='width:100%' border ='1px solid black'>");
+        cal.add(Calendar.DATE, -6);
+        date = cal.getTime();
 
         //  ---- CURRENT DAY ----
 
@@ -110,6 +148,7 @@ public class CalendarServlet extends HttpServlet {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        // out.println(newDate);
         out.println("</td>");
 
         // Monday Events
@@ -168,13 +207,12 @@ public class CalendarServlet extends HttpServlet {
         out.println("</tr><table></html>");
 
 
+        out.print("<a href='MonthlyServlet'>View Monthly Calendar</a><br/>");
+        out.print("<form action = \"CalendarServlet\" method = \"GET\">\n" +
+                "         View Week Of (MM/dd): <input type = \"text\" name = \"date\">\n" +
+                "         <input type = 'submit' value = 'GO' />" +
+                "      </form>");
 
-//        out.print("<form action = 'UploadServlet' method = post enctype = 'multipart/form-data'/>");
-//        out.print("<input type = 'String' name = " + day7 + "/> <br />  input type = 'submit' value = 'Next Week' /></form>");
-
-
-
-        //getServletContext().getRequestDispatcher("/calDisplay.jsp");//.forward(request,response);
 
     }
 
