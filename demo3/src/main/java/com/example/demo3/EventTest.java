@@ -14,6 +14,7 @@ class EventTest {
     private Object NullPointerException;
 
     @Test
+    //black box
     public void  getEvent() throws ParseException {
         Date convertedDate;
         Parser parser = new Parser();

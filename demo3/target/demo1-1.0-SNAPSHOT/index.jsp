@@ -17,12 +17,14 @@
 </br>
 </br>
 <h3>File Upload:</h3>
-Select a file to upload: <br />
+Select syllabus from root folder /syllabusHERE/syllabus.pdf: <br />
 <form action = "UploadServlet" method = "post" enctype = "multipart/form-data">
     <input type = "file" name = "file" size = "250" />
     <br />
     <input type = "submit" value = "Upload File" />
 </form>
-
+<form action = "PDFServlet" method="post" enctype = "multipart/form-data">
+    <input type="submit" value="Save Calendar as PDF"/>
+</form>
 </body>
 </html>
