@@ -2,17 +2,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>Syllabi Scanner</title>
 </head>
 <body>
-<h1><%= "Hello World!" %>
+<h1><%= "Syllabi Scanner" %>
 </h1>
 <br/>
-<a href="EventServlet">Add/Remove Events</a><br/>
-<a href="CoursesServlet">Courses (Redacted)</a><br/>
-<a href="CalendarServlet">Calendar</a><br/>
-<a href="SearchServlet">Search</a><br/>
-<a href="EditServlet">Edit</a><br/>
+
+<form action=/demo1_war_exploded/EventServlet><input type='submit' value='Add/Remove Events'/></form></br>
+<form action=/demo1_war_exploded/CoursesServlet><input type='submit' value='Courses (redacted)'/></form></br>
+<form action=/demo1_war_exploded/CalendarServlet><input type='submit' value='Weekly Calendar Display'/></form></br>
+<form action=/demo1_war_exploded/MonthlyServlet><input type='submit' value='Monthly Calendar Display'/></form></br>
+<form action=/demo1_war_exploded/SearchServlet><input type='submit' value='Search'/></form></br>
+<form action=/demo1_war_exploded/EditServlet><input type='submit' value='Edit'/></form></br>
+
+<%--<a href="EventServlet">Add/Remove Events</a><br/>--%>
+<%--<a href="CoursesServlet">Courses (Redacted)</a><br/>--%>
+<%--<a href="CalendarServlet">Calendar</a><br/>--%>
+<%--<a href="SearchServlet">Search</a><br/>--%>
+<%--<a href="EditServlet">Edit</a><br/>--%>
 
 </br>
 </br>
