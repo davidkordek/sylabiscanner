@@ -32,7 +32,7 @@ Select syllabus from root folder /syllabusHERE/syllabus.pdf: <br />
     <input type = "submit" value = "Upload File" />
 </form>
 <form action = "PDFServlet" method="post" enctype = "multipart/form-data">
-    <input type="submit" value="Save Calendar as PDF"/>
+    <input type="submit" disabled="disabled" value="Save Calendar as PDF"/>
 </form>
 </body>
 </html>
