@@ -27,7 +27,7 @@ public class MonthlyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        //getServletContext().getRequestDispatcher("/monthlyCal.jsp").forward(request, response);
+
         Parser parser = new Parser();
         Calendar cal = Calendar.getInstance();
         Date date = new Date();
@@ -43,8 +43,6 @@ public class MonthlyServlet extends HttpServlet {
         String newDate = null;
         newDate = request.getParameter("date");
 
-        //PrintWriter out = response.getWriter();
-
         if(newDate == null)
         {
             cal.add(Calendar.MONTH,-1);
@@ -54,18 +52,9 @@ public class MonthlyServlet extends HttpServlet {
         else if (newDate != null)
         {
             int m = Integer.parseInt(newDate);
-            // int d = Integer.parseInt(newDate.substring(3));
             int currentM = Integer.parseInt(sMonth.format(date));
-            //int currentD = Integer.parseInt(sDay.format(date));
-
-            m = currentM - m;   // if currentM > m then m is positive
-            // if m > currentM then m is negative
-
-            // d = currentD - d;   // if currentD > d then d is positive
-            // if d > currentD then d is negative
-
+            m = currentM - m;
             cal.add(Calendar.MONTH, -m);
-            //cal.add(Calendar.DATE, -d);
         }
 
         int totalDays = findMonthSize(sYear.format(date), sMonth.format(date), sDay.format(date));  // find total days in the current month
@@ -80,11 +69,22 @@ public class MonthlyServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.print("<br><a href=\"/demo1_war_exploded/\"><button type=\"button\">GO HOME</button></a>");
-            out.print("<br><a href=\"/demo1_war_exploded/CalendarServlet\"><button type=\"button\">GO TO WEEKLY CALENDAR</button></a>");
             out.println("<title>Monthly Calender</title>");
             out.println("</head>");
             out.println("<body><h2>Monthly Calendar<h2><h1>" + sMonthText.format(date) + "</h1>");
+
+            //  ---- HOME BUTTON ----
+            out.print("<form action=/demo1_war_exploded/><input type='submit' value='GO HOME'/></form>");
+
+            //  ---- VIEW MONTHLY CALENDAR BUTTON ----
+            out.print("<form action=/demo1_war_exploded/CalendarServlet><input type='submit' value='View Weekly Display'/></form>");
+
+            //  ---- ADD EVENT BUTTON ----
+            out.print("<form action=/demo1_war_exploded/EventServlet><input type='submit' value='Add/Remove Events'/></form></br>");
+
+            //  ---- VIEW NEW MONTH BUTTON ----
+            out.print("<form action=/demo1_war_exploded/MonthlyServlet method='GET'> View Month Of (mm): <input type='text' name='date'><input type='submit' value='GO'/></form>");
+
 
 
             //  ---- DISPLAYS HEADERS (Sunday-Monday) STARTING WITH 1st OF THE MONTH
@@ -521,14 +521,12 @@ public class MonthlyServlet extends HttpServlet {
 
             out.println("</table></body></html>");
 
-            out.print("<form action = \"MonthlyServlet\" method = \"GET\">\n" +
-                    "         View Month (MM): <input type = \"text\" name = \"date\">\n" +
-                    "         <input type = 'submit' value = 'GO' />" +
-                    "      </form>");
         }
 
 
     }
+
+
 
     public int findMonthSize(String year, String month, String day)
     {
