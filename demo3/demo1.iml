@@ -30,7 +30,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../sbscan/webapp/WEB-INF/commons-fileupload-1.4.jar!/" />
+          <root url="jar://C:/Users/sbscan/webapp/WEB-INF/commons-fileupload-1.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -39,7 +39,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../sbscan/webapp/WEB-INF/commons-io-2.6.jar!/" />
+          <root url="jar://C:/Users/sbscan/webapp/WEB-INF/commons-io-2.6.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -48,7 +48,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../sbscan/webapp/WEB-INF/commons-logging-1.2.jar!/" />
+          <root url="jar://C:/Users/sbscan/webapp/WEB-INF/commons-logging-1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -57,7 +57,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../sbscan/webapp/WEB-INF/fontbox-3.0.0-RC1.jar!/" />
+          <root url="jar://C:/Users/sbscan/webapp/WEB-INF/fontbox-3.0.0-RC1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -66,7 +66,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../sbscan/webapp/WEB-INF/pdfbox-2.0.23.jar!/" />
+          <root url="jar://C:/Users/sbscan/webapp/WEB-INF/pdfbox-2.0.23.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
