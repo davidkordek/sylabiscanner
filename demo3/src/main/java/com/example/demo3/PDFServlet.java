@@ -1,12 +1,10 @@
 package com.example.demo3;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import org.json.JSONObject;
@@ -17,8 +15,9 @@ import javax.servlet.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Iterator;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "PDFServlet", value = "/PDFServlet")
 public class PDFServlet extends HttpServlet {
@@ -39,39 +38,54 @@ public class PDFServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PDDocument document = new PDDocument();
 
-        PDPage page = new PDPage();
-        document.addPage(page);
-        PDPageContentStream contentStream = new PDPageContentStream(document, page);
-        contentStream.beginText();
         Parser parser = new Parser();
         Calendar cal = new Calendar();
         try {
-           cal = parser.readJSON(false);
+            cal = parser.readJSON(false);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        contentStream.setFont( PDType1Font.HELVETICA_BOLD	, 12 );
+        PDDocument document = new PDDocument();
 
+        PDPage page = new PDPage(PDRectangle.A4);
+        document.addPage(page);
+        PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+        contentStream.beginText();
+        contentStream.newLineAtOffset(25, 800);
+        contentStream.setLeading(14.5f);
+        contentStream.setFont( PDType1Font.TIMES_ROMAN	, 11 );
 
         for ( JSONObject obj: cal.getCalendar()) {
+            ArrayList<String> text;
             StringBuilder sb = new StringBuilder();
             //System.out.println((String) obj.get("eventDate"));
-            sb.append((String) obj.get("eventDate")+ " ");
-            sb.append((String) obj.get("eventType") +" ");
-            sb.append((String) obj.get("eventDescription")+ " \n");
+            sb.append("Date: "+(String) obj.get("eventDate")+ " ");
+            //sb.append((String) obj.get("eventType") +" ");
+            sb.append("Description: "+(String) obj.get("eventDescription")+ " ");
+
+            //this replaces letters in the string to make it look nicer and we remove new line characters
+            //because the program will crash if we dont.
+            String t = sb.toString().replace("\n", " ").replace("\r", " ").replace(","," ").replace("-","");
+            t = t.replaceAll("\\(\\d\\d/\\d\\d\\)"," ");
+
+
+            //this line of code removes duplicate words in the string.
+            String a = Arrays.stream( t.split("\\s+")).distinct().collect(Collectors.joining(" ") );
+            contentStream.showText(a);
             contentStream.newLine();
-            contentStream.showText(sb.toString());
+
         }
-
-
+        //the syllabus will be short enough that one page will be enough.
         contentStream.endText();
         contentStream.close();
-        document.addPage(page);
+        //document.addPage(page);
         document.save(new File("c:\\Program Files\\apache-tomcat-9.0.45\\webapps\\data/my_syllabus.pdf"));
         document.close();
         System.out.println("PDF created");
+        getServletContext().getRequestDispatcher("/pdfCreatedSuccess.jsp").forward(request,response);
 
     }
+
 }
